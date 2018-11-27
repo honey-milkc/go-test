@@ -1,4 +1,4 @@
-package book1_chapter4
+package chapter4
 
 import (
 	"fmt"
@@ -146,7 +146,4 @@ func DoInterface() {
 	c := circle{2.5}
 	describe(r)
 	describe(c)
-
-	var v interface{}
-
 }

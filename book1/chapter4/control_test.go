@@ -1,4 +1,4 @@
-package book1_chapter4
+package chapter4
 
 import (
 	"testing"
