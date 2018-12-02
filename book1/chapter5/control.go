@@ -76,6 +76,12 @@ func DoWithChannel() {
 	// 하는 것이 일반적인데, 이때는 채널이 대부분 단방향으로만 사용된다! 즉, 수신 전용 채널 또는 송신 전용 채널이다!
 	// chan<- string // 송신 전용 채널
 	// <-chan string // 수신 전용 채널
+
+	// [channel close]
+	// close(ch)
+	// 채널을 닫은 후에 메시지를 전송하면 에러 발생!
+	// v, ok := <-ch // ok가 false 라면 채널에 더는 수신할 값이 없고 채널이 닫힌 상태이다.
+	// 채널을 닫는 것은 필수가 아니다. 수신자가 채널에 더 이상 들어올 값이 없다는 것을 알아야 할 때만 채널을 닫아주면 된다.
 }
 
 func longWithChannel(done chan bool) {
@@ -114,4 +120,53 @@ func DoChannel() {
 	fmt.Println(<-c)
 	fmt.Println(<-c)
 	fmt.Println(<-c)
+}
+
+func fibonacci(c, quit chan int) {
+	// [select]
+	// select문은 하나의 고루틴이 여러 채널과 통신할 때 사용한다.
+	// case로 여러 채널을 대기시키고 있다가 실행 가능 상태가 된 채널이 있으면 해당 케이스를 수행.
+
+	// select문에서 default case를 지정하면 case에 지정된 모든 채널이 사용 가능 상태가 아닐 때 default case를 수행
+
+	/*
+		c1 := make(chan int)
+		c2 := make(chan int)
+		// ...
+		select {
+		case <-c1:
+			// c1 채널에 값이 전달됐을 때 수행
+		case <-c2:
+			// c2 채널에 값이 전달됐을 때 수행
+		default:
+			// case에서 대기하고 있는 채널에 값이 전달되지 않았을 때 수행
+		}
+	*/
+
+	x, y := 0, 1
+	for i := 0; ; i++ {
+		select {
+		case c <- x:
+			fmt.Println("SEND??? ", x)
+			x, y = y, x+y
+		case <-quit:
+			fmt.Println("quit")
+			return
+			// default:
+			// 	fmt.Println("......... ", i)
+		}
+	}
+}
+
+func DoSelect() {
+	c := make(chan int)
+	quit := make(chan int)
+
+	go func() {
+		for i := 0; i < 10; i++ {
+			fmt.Println("RECEIVE??? ", <-c) // 수신?
+		}
+		quit <- 0 // 송신?
+	}()
+	fibonacci(c, quit)
 }
