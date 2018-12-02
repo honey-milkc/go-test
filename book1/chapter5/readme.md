@@ -38,7 +38,7 @@
   ```
 
 ## sync.WaitGroup
-모든 고루틴이 종료될 때까지 대기
+모든 고루틴이 종료될 때까지 대기 [[예제](https://github.com/honey-milkc/go-test/blob/master/book1/chapter5/sync.go#L100)]
 * 제공하는 Method
   ```go
   func (wg *WaitGroup) Add(delta int) 
