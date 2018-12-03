@@ -56,3 +56,21 @@
     Wait을 호출하면 대기 중인 모든 고루틴이 종료될 때까지 대기하므로!  
 
 
+# sync/atomic
+Atomic Operation : 원자성을 보장하는 연산이란 쪼갤 수 없는 연산을 말한다.
+* i += 1 연산
+  1. memory에서 값 read
+  2. +1
+  3. write memory
+
+고루틴을 여러 개를 동시에 실행하면 이 과정에 동기화 문제가 발생할 수도!!
+* sync/atomic에서 지원하는 Method
+
+  method | desc
+  ------ | ----
+  AddT | 특정 포인터 변수에 값을 더함
+  CompareAndSwapT | 특정 포인터 변수의 값을 주어진 값과 비교하여 같으면 새로운 값으로 대체함
+  LoadT | 특정 포인터 변수의 값을 가져옴
+  StoreT | 특정 포인터 변수에 값을 저장함
+  SwapT | 특정 포인터 변수에 새로운 값을 저장하고 이전 값을 가져옴
+* Mutex를 쓰지 않고 sync/atomic에서 지원하는 method로 처리 가능.
